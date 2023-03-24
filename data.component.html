@@ -1,0 +1,17 @@
+<mat-card-content>
+  <div *ngIf="data.easy" class="entry-container">
+    <app-entry [data]="data.easy" (done)="onSaveChanges()"></app-entry>
+  </div>
+  <div *ngIf="data.medium" class="entry-container">
+    <app-entry [data]="data.medium" (done)="onSaveChanges()"></app-entry>
+  </div>
+  <div *ngIf="data.hard" class="entry-container">
+    <app-entry [data]="data.hard" (done)="onSaveChanges()"></app-entry>
+  </div>
+  <div *ngIf="data.veryHard" class="entry-container">
+    <app-entry [data]="data.veryHard" (done)="onSaveChanges()"></app-entry>
+  </div>
+  <div *ngIf="data.frenzy" class="entry-container">
+    <app-entry [data]="data.frenzy" (done)="onSaveChanges()"></app-entry>
+  </div>
+</mat-card-content>

@@ -1,0 +1,90 @@
+<mat-card>
+  <mat-card-actions class="header">
+    <span class="spacer"></span>
+    <div class="score" style="color: red; padding-right: 3rem">
+      <h2>{{ redTeam.name }}: {{ redTeam.score }}</h2>
+    </div>
+    <div class="score" style="color: blue">
+      <h2>{{ blueTeam.name }}: {{ blueTeam.score }}</h2>
+    </div>
+    <span class="spacer"></span>
+    <div>
+      <mat-select placeholder="Typ pytania" [(ngModel)]="type" color="primary">
+        <mat-option *ngFor="let qType of types" [value]="qType">
+          {{ qType }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <button mat-raised-button color="primary" (click)="getQuestion(template)">
+      Losuj pytanie
+      <mat-icon> shuffle </mat-icon>
+    </button>
+    <ng-template #template>
+      <h1 mat-dialog-title>Losowanie pytania - poprzednie niekompletne</h1>
+      <div mat-dialog-content>
+        <h3>
+          Czy na pewno chcesz losowac nastepne pytanie? Temu zostalo jeszcze
+          {{ question ? question[0].maxPoints - scoreSum : "" }}
+          pktów do konca
+        </h3>
+      </div>
+      <div mat-dialog-actions>
+        <button
+          class="bordered_button--accent"
+          mat-raised-button
+          color="accent"
+          [mat-dialog-close]="false"
+        >
+          Nie, wroc do pytania
+          <mat-icon> close </mat-icon>
+        </button>
+        <span class="spacer"></span>
+        <button
+          class="bordered_button--warn"
+          mat-raised-button
+          color="warn"
+          cdkFocusInitial
+          [mat-dialog-close]="true"
+        >
+          Tak, losuj nastepne pytanie
+          <mat-icon> check </mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </mat-card-actions>
+
+  <mat-card-content *ngIf="question">
+    <app-entry
+      [entryFullWidth]="true"
+      *ngIf="scoreSum < question[0].maxPoints"
+      [data]="question"
+    ></app-entry>
+  </mat-card-content>
+
+  <mat-card-actions
+    class="buttons"
+    *ngIf="
+      question &&
+      (question[0].type === 'FRENZY' || scoreSum < question[0].maxPoints)
+    "
+  >
+    <span class="spacer"></span>
+    <button
+      mat-raised-button
+      class="score"
+      color="warn"
+      (click)="addScore('red')"
+    >
+      {{ redTeam.name }} +{{ question[0].partialPoints }}
+    </button>
+    <button
+      mat-raised-button
+      class="score"
+      color="primary"
+      (click)="addScore('blue')"
+    >
+      {{ blueTeam.name }} +{{ question[0].partialPoints }}
+    </button>
+    <span class="spacer"></span>
+  </mat-card-actions>
+</mat-card>
